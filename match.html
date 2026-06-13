@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Match Detail · Football Stats Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/src/styles/main.css" />
+  </head>
+  <body>
+    <header id="site-header"></header>
+
+    <main class="container match-page">
+      <a href="/" class="back-link">← Back to fixtures</a>
+
+      <section class="match-hero" id="match-hero" aria-live="polite"></section>
+
+      <nav class="tabs" id="match-tabs" aria-label="Match sections">
+        <button class="tab active" data-tab="events" type="button">Events</button>
+        <button class="tab" data-tab="stats" type="button">Stats</button>
+        <button class="tab" data-tab="lineups" type="button">Lineups</button>
+        <button class="tab" data-tab="h2h" type="button">Head-to-head</button>
+        <button class="tab" data-tab="betting" type="button">Betting</button>
+      </nav>
+
+      <section id="tab-events" class="tab-panel"></section>
+      <section id="tab-stats" class="tab-panel hidden"></section>
+      <section id="tab-lineups" class="tab-panel hidden"></section>
+      <section id="tab-h2h" class="tab-panel hidden"></section>
+      <section id="tab-betting" class="tab-panel hidden"></section>
+    </main>
+
+    <button id="scroll-top" class="scroll-top" aria-label="Scroll to top">↑</button>
+    <footer id="site-footer"></footer>
+
+    <script type="module" src="/src/match.js"></script>
+  </body>
+</html>

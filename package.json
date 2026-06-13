@@ -1,0 +1,16 @@
+{
+  "name": "football-stats-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Football Stats Dashboard — WDD 330 final project",
+  "scripts": {
+    "start": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "start": "vite preview --port 5173"
+  },
+  "devDependencies": {
+    "vite": "^8.0.16"
+  }
+}

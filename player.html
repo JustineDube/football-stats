@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Player · Football Stats Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/src/styles/main.css" />
+  </head>
+  <body>
+    <header id="site-header"></header>
+
+    <main class="container player-page">
+      <a href="/" class="back-link">← Back</a>
+
+      <section class="player-hero" id="player-hero"></section>
+
+      <section class="stats-cards" id="player-stats-cards" aria-label="Season totals"></section>
+
+      <section class="panel" aria-labelledby="form-heading">
+        <h2 id="form-heading">Form rating (last 10)</h2>
+        <div id="player-form-chart" class="form-chart"></div>
+      </section>
+
+      <section class="panel" aria-labelledby="player-news-heading">
+        <h2 id="player-news-heading">News</h2>
+        <div id="player-news"></div>
+      </section>
+    </main>
+
+    <button id="scroll-top" class="scroll-top" aria-label="Scroll to top">↑</button>
+    <footer id="site-footer"></footer>
+
+    <script type="module" src="/src/player.js"></script>
+  </body>
+</html>

@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Live football scores, league tables, player stats and match analysis in one clean dashboard." />
+    <title>Football Stats Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/src/styles/main.css" />
+  </head>
+  <body>
+    <header id="site-header"></header>
+
+    <main class="container home">
+      <section class="hero">
+        <div class="hero-eyebrow">
+          <span class="live-dot" aria-hidden="true"></span>
+          <span id="hero-eyebrow-text">Live & today</span>
+        </div>
+        <h1 class="hero-title">Every match. <br /><span class="accent">One screen.</span></h1>
+        <p class="hero-sub">Pick a league. See what's on. Click a fixture for the full story.</p>
+      </section>
+
+      <nav class="league-picker" aria-label="League selector">
+        <div class="league-tabs" id="league-tabs"></div>
+      </nav>
+
+      <section class="summary-bar" id="summary-bar" aria-label="Today's snapshot"></section>
+
+      <div class="grid-home">
+        <section class="col-fixtures" aria-labelledby="fixtures-heading">
+          <div class="section-head">
+            <h2 id="fixtures-heading">Fixtures</h2>
+            <button id="refresh-fixtures" class="ghost-btn" type="button">Refresh</button>
+          </div>
+          <div id="fixtures-list" class="fixtures-list"></div>
+        </section>
+
+        <aside class="col-side">
+          <section aria-labelledby="standings-heading" class="panel">
+            <div class="section-head">
+              <h2 id="standings-heading">Standings</h2>
+              <a href="#" id="standings-full-link" class="ghost-link">Full table →</a>
+            </div>
+            <div id="standings-mini"></div>
+          </section>
+
+          <section aria-labelledby="favs-heading" class="panel">
+            <h2 id="favs-heading">Favourites</h2>
+            <div id="favourites-list"></div>
+          </section>
+        </aside>
+      </div>
+
+      <section aria-labelledby="news-heading" class="news-section">
+        <div class="section-head">
+          <h2 id="news-heading">Latest news</h2>
+        </div>
+        <div id="news-grid" class="news-grid"></div>
+      </section>
+    </main>
+
+    <button id="scroll-top" class="scroll-top" aria-label="Scroll to top">↑</button>
+    <footer id="site-footer"></footer>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

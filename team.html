@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Team · Football Stats Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/src/styles/main.css" />
+  </head>
+  <body>
+    <header id="site-header"></header>
+
+    <main class="container team-page">
+      <a href="/" class="back-link">← Back</a>
+
+      <section class="team-hero" id="team-hero"></section>
+
+      <section class="stats-cards" id="team-stats-cards" aria-label="Season totals"></section>
+
+      <div class="grid-team">
+        <section class="panel" aria-labelledby="recent-results-heading">
+          <h2 id="recent-results-heading">Recent results</h2>
+          <div id="team-recent"></div>
+        </section>
+
+        <section class="panel" aria-labelledby="top-scorers-heading">
+          <h2 id="top-scorers-heading">Top scorers</h2>
+          <div id="team-top-scorers"></div>
+        </section>
+      </div>
+
+      <section class="panel" aria-labelledby="team-form-heading">
+        <h2 id="team-form-heading">Form (last 10)</h2>
+        <div id="team-form" class="form-strip"></div>
+      </section>
+    </main>
+
+    <button id="scroll-top" class="scroll-top" aria-label="Scroll to top">↑</button>
+    <footer id="site-footer"></footer>
+
+    <script type="module" src="/src/team.js"></script>
+  </body>
+</html>

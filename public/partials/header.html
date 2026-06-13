@@ -1,0 +1,24 @@
+<div class="site-header-inner">
+  <a href="/" class="brand" aria-label="Home">
+    <span class="brand-mark" aria-hidden="true"></span>
+    <span class="brand-name">FSD</span>
+  </a>
+  <form class="search-form" id="header-search" role="search">
+    <label class="visually-hidden" for="search-input">Search players</label>
+    <input
+      id="search-input"
+      type="search"
+      name="q"
+      placeholder="Search players…"
+      autocomplete="off"
+    />
+    <button type="submit" class="search-btn" aria-label="Search">→</button>
+    <ul id="search-results" class="search-results" role="listbox" hidden></ul>
+  </form>
+  <button id="menu-toggle" class="menu-toggle" aria-label="Menu" type="button">☰</button>
+  <nav class="primary-nav" id="primary-nav" aria-label="Primary">
+    <a href="/">Home</a>
+    <a href="/?view=standings">Standings</a>
+    <a href="/?view=news">News</a>
+  </nav>
+</div>
