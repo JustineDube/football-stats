@@ -1,7 +1,13 @@
 // main.js — home page entry.
 // ---------------------------------------------------------------
+// API integrations:
+//   1. FootballData  → Free API Live Football Data on RapidAPI
+//      (fixtures, standings, scores, players, teams)
+//   2. NewsAPI       → NewsAPI.org  (football headlines)
+// ---------------------------------------------------------------
 
 import FootballData from "./modules/FootballData.mjs";
+import NewsAPI from "./modules/NewsAPI.mjs";
 import Standings from "./modules/Standings.mjs";
 import {
   loadHeaderFooter,
@@ -25,6 +31,7 @@ async function bootstrap() {
   setupScrollTop();
 
   const api = new FootballData();
+  const newsApi = new NewsAPI();
   setupSearch(api);
 
   // ----- league tabs -----
@@ -73,8 +80,8 @@ async function bootstrap() {
   // optional live polling (silent unless games are live)
   startLiveTicker(api, null);
 
-  // ----- latest news -----
-  loadNews(api);
+  // ----- latest news (NewsAPI.org — second API) -----
+  loadNews(newsApi);
 }
 
 async function loadLeague(api, leagueId) {
@@ -135,24 +142,27 @@ function renderFixtures(mount, fixtures) {
   attachImageFallbacks(mount);
 }
 
-async function loadNews(api) {
+async function loadNews(newsApi) {
   const mount = document.getElementById("news-grid");
   mount.innerHTML = Array.from({ length: 3 })
     .map(() => `<div class="skeleton skeleton-card" style="height:200px"></div>`)
     .join("");
   try {
-    const news = await api.getNews();
+    const news = await newsApi.getNews();
     mount.innerHTML = news
       .slice(0, 6)
       .map(
-        (n) => `
-        <article class="news-card">
+        (n) => {
+          const tag = n.url ? "a" : "article";
+          const href = n.url ? `href="${n.url}" target="_blank" rel="noopener noreferrer"` : "";
+          return `<${tag} class="news-card" ${href}>
           <div class="news-img" style="background-image:url('${n.image}')"></div>
           <div class="news-body">
             <h3>${escapeHTML(n.title)}</h3>
             <div class="news-meta"><span>${escapeHTML(n.source)}</span><span>${escapeHTML(n.time)}</span></div>
           </div>
-        </article>`
+        </${tag}>`;
+        }
       )
       .join("");
   } catch (err) {

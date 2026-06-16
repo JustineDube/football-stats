@@ -133,7 +133,9 @@ export default class FootballData {
         { leagueid: leagueId },
         "standings"
       );
-      return this._normaliseStandings(data);
+      const standings = this._normaliseStandings(data);
+      if (!standings.length) throw new Error("empty"); // fall to mock
+      return standings;
     } catch {
       return MOCK_STANDINGS[leagueId] || [];
     }
@@ -141,14 +143,14 @@ export default class FootballData {
 
   async getMatchDetail(matchId) {
     try {
-      // The real API exposes match detail via a different endpoint;
-      // we keep the call generic and rely on caching.
       const data = await this._fetch(
         "/football-get-match-detail",
         { matchid: matchId },
         "match"
       );
-      return this._normaliseMatch(data);
+      const match = this._normaliseMatch(data, matchId);
+      if (!match) throw new Error("empty"); // triggers mock fallback
+      return match;
     } catch {
       return MOCK_MATCH_DETAIL[matchId] || MOCK_MATCH_DETAIL.m1;
     }
@@ -162,11 +164,22 @@ export default class FootballData {
         { search: q },
         "search"
       );
-      return this._normaliseSearch(data);
+      const results = this._normaliseSearch(data);
+      if (results.length) return results;
+      throw new Error("empty"); // fall through to mock
     } catch {
       const needle = q.toLowerCase();
       return Object.values(MOCK_PLAYERS)
-        .filter((p) => p.name.toLowerCase().includes(needle))
+        .filter((p) => {
+          const name = p.name.toLowerCase();
+          const club = (p.club?.name || "").toLowerCase();
+          // match on any word in the name or club
+          return (
+            name.includes(needle) ||
+            club.includes(needle) ||
+            name.split(" ").some((w) => w.startsWith(needle))
+          );
+        })
         .map((p) => ({
           id: p.id,
           name: p.name,
@@ -267,25 +280,68 @@ export default class FootballData {
   }
 
   _normaliseStandings(data) {
-    const table = data?.response?.standings?.[0]?.table;
-    if (!Array.isArray(table)) return [];
-    return table.map((r) => ({
-      rank: r.idx,
-      teamId: r.teamId,
-      teamName: r.name,
-      played: r.played,
-      won: r.wins,
-      drawn: r.draws,
-      lost: r.losses,
-      gf: r.scoresStr?.split("-")?.[0] || 0,
-      ga: r.scoresStr?.split("-")?.[1] || 0,
-      gd: r.goalConDiff,
-      pts: r.pts
+    // Try multiple response shapes RapidAPI might return
+    const table =
+      data?.response?.standings?.[0]?.table ||
+      data?.response?.table ||
+      data?.standings?.[0]?.table ||
+      data?.table ||
+      null;
+
+    if (!Array.isArray(table) || table.length === 0) return [];
+
+    return table.map((r, i) => ({
+      rank: r.idx ?? r.position ?? i + 1,
+      teamId: r.teamId ?? r.id,
+      teamName: r.name ?? r.teamName ?? "Unknown",
+      played: r.played ?? r.mp ?? 0,
+      won: r.wins ?? r.w ?? 0,
+      drawn: r.draws ?? r.d ?? 0,
+      lost: r.losses ?? r.l ?? 0,
+      gf: r.scoresStr?.split("-")?.[0] ?? r.gf ?? 0,
+      ga: r.scoresStr?.split("-")?.[1] ?? r.ga ?? 0,
+      gd: r.goalConDiff ?? r.gd ?? 0,
+      pts: r.pts ?? r.points ?? 0
     }));
   }
 
-  _normaliseMatch(data) {
-    return data?.response || null;
+  _normaliseMatch(data, matchId) {
+    // Try different response shapes the RapidAPI endpoint might return
+    const r = data?.response?.match || data?.response || data?.match || null;
+    if (!r) return null;
+
+    // If the response already has the shape our UI expects, return it
+    if (r.home && r.away && r.score) return r;
+
+    // Try to build a match object from common API field names
+    const homeId = r.homeTeam?.id || r.home?.id;
+    const awayId = r.awayTeam?.id || r.away?.id;
+    if (!homeId && !awayId) return null;
+
+    return {
+      id: matchId,
+      home: {
+        id: homeId,
+        name: r.homeTeam?.name || r.home?.name || "Home",
+        logoId: homeId
+      },
+      away: {
+        id: awayId,
+        name: r.awayTeam?.name || r.away?.name || "Away",
+        logoId: awayId
+      },
+      score: {
+        home: r.homeScore ?? r.score?.home ?? 0,
+        away: r.awayScore ?? r.score?.away ?? 0
+      },
+      status: r.status?.finished ? "FT" : r.status?.started ? "LIVE" : "UPCOMING",
+      minute: r.status?.liveTime?.short || null,
+      kickoff: r.status?.utcTime || new Date().toISOString(),
+      venue: r.venue?.name || r.venue || "",
+      events: r.events || [],
+      stats: r.stats || null,
+      lineups: r.lineups || null
+    };
   }
 
   _normaliseSearch(data) {

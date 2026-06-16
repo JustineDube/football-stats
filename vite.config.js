@@ -16,6 +16,13 @@ export default defineConfig({
   },
   server: {
     port: 5173,
-    open: true
+    // Proxy NewsAPI calls to avoid CORS in dev
+    proxy: {
+      "/newsapi": {
+        target: "https://newsapi.org",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/newsapi/, "")
+      }
+    }
   }
 });

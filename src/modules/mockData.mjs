@@ -210,12 +210,45 @@ export const MOCK_STANDINGS = {
   ])
 };
 
-// fill the smaller leagues with shorter tables
+// fill the smaller leagues with proper mock tables
+const LEAGUE_MOCK_TEAMS = {
+  55: [ // Serie A
+    [9885, "Inter Milan"], [9882, "Juventus"], [9823, "AC Milan"],
+    [9876, "Napoli"], [9887, "Roma"], [9880, "Lazio"],
+    [9884, "Atalanta"], [9881, "Fiorentina"], [9878, "Torino"], [9886, "Bologna"]
+  ],
+  54: [ // Bundesliga
+    [9823, "Bayern Munich"], [9789, "Dortmund"], [9787, "RB Leipzig"],
+    [9788, "Leverkusen"], [9790, "Frankfurt"], [9792, "Wolfsburg"],
+    [9791, "Freiburg"], [9793, "Hoffenheim"], [9794, "Mainz"], [9795, "Augsburg"]
+  ],
+  53: [ // Ligue 1
+    [9847, "PSG"], [9748, "Marseille"], [9750, "Lyon"],
+    [9749, "Monaco"], [9751, "Lille"], [9752, "Nice"],
+    [9753, "Rennes"], [9754, "Lens"], [9755, "Strasbourg"], [9756, "Nantes"]
+  ],
+  12310: [ // CAF Champions League
+    [9999, "Al Ahly"], [9998, "Mamelodi Sundowns"], [10001, "Wydad"], [10002, "ES Tunis"],
+    [10003, "TP Mazembe"], [10004, "Zamalek"], [10005, "Raja Casablanca"],
+    [10006, "Simba SC"], [10007, "Hearts of Oak"], [10008, "Kaizer Chiefs"]
+  ]
+};
+
 [55, 54, 53, 12310].forEach((id) => {
   if (!MOCK_STANDINGS[id]) {
-    MOCK_STANDINGS[id] = MOCK_STANDINGS[47].slice(0, 10).map((r, i) => ({
-      ...r,
-      rank: i + 1
+    const teams = LEAGUE_MOCK_TEAMS[id] || [];
+    MOCK_STANDINGS[id] = teams.map(([teamId, teamName], i) => ({
+      rank: i + 1,
+      teamId,
+      teamName,
+      played: 16 - i,
+      won: Math.max(0, 12 - i * 1.1 | 0),
+      drawn: 2,
+      lost: Math.max(0, i * 1.1 | 0),
+      gf: Math.max(8, 32 - i * 2),
+      ga: Math.max(8, 12 + i * 2),
+      gd: Math.max(-10, 20 - i * 3),
+      pts: Math.max(2, 38 - i * 3)
     }));
   }
 });
@@ -379,6 +412,102 @@ export const MOCK_PLAYERS = {
     stats: { goals: 13, assists: 4, appearances: 15, yellow: 4, red: 0 },
     form: [8.8, 8.1, 9.0, 7.9, 8.6, 8.3, 9.2, 8.0, 8.7, 8.4],
     news: [{ title: "Bellingham named La Liga player of the month", source: "Marca", time: "1d ago" }]
+  },
+  p5: {
+    id: "p5",
+    name: "Lionel Messi",
+    photoId: 158023,
+    position: "Forward",
+    nationality: "Argentina",
+    age: 37,
+    club: { id: 9999, name: "Inter Miami" },
+    stats: { goals: 11, assists: 10, appearances: 14, yellow: 1, red: 0 },
+    form: [8.5, 9.0, 7.8, 8.7, 9.2, 8.1, 8.9, 7.6, 9.0, 8.4],
+    news: [{ title: "Messi masterclass sends Miami through", source: "ESPN", time: "3h ago" }]
+  },
+  p6: {
+    id: "p6",
+    name: "Cristiano Ronaldo",
+    photoId: 17981,
+    position: "Forward",
+    nationality: "Portugal",
+    age: 39,
+    club: { id: 8888, name: "Al Nassr" },
+    stats: { goals: 20, assists: 5, appearances: 18, yellow: 2, red: 0 },
+    form: [8.0, 8.4, 7.9, 8.6, 9.0, 7.5, 8.3, 8.8, 8.1, 8.5],
+    news: [{ title: "Ronaldo breaks another all-time record", source: "Sky Sports", time: "1d ago" }]
+  },
+  p7: {
+    id: "p7",
+    name: "Kylian Mbappé",
+    photoId: 342229,
+    position: "Forward",
+    nationality: "France",
+    age: 25,
+    club: { id: 8634, name: "Real Madrid" },
+    stats: { goals: 22, assists: 7, appearances: 17, yellow: 1, red: 0 },
+    form: [9.0, 8.7, 9.3, 8.5, 9.1, 8.8, 9.4, 8.2, 9.0, 8.6],
+    news: [{ title: "Mbappé fires Real Madrid to top of La Liga", source: "Marca", time: "5h ago" }]
+  },
+  p8: {
+    id: "p8",
+    name: "Vinicius Junior",
+    photoId: 371998,
+    position: "Winger",
+    nationality: "Brazil",
+    age: 24,
+    club: { id: 8634, name: "Real Madrid" },
+    stats: { goals: 12, assists: 11, appearances: 16, yellow: 3, red: 0 },
+    form: [8.2, 8.9, 7.7, 9.0, 8.4, 8.6, 9.1, 7.8, 8.5, 8.8],
+    news: [{ title: "Vinicius shortlisted for Ballon d'Or", source: "L'Equipe", time: "2d ago" }]
+  },
+  p9: {
+    id: "p9",
+    name: "Harry Kane",
+    photoId: 202126,
+    position: "Striker",
+    nationality: "England",
+    age: 31,
+    club: { id: 9823, name: "Bayern Munich" },
+    stats: { goals: 25, assists: 6, appearances: 18, yellow: 1, red: 0 },
+    form: [8.8, 9.0, 8.5, 9.2, 8.7, 9.1, 8.4, 8.9, 9.3, 8.6],
+    news: [{ title: "Kane breaks Bundesliga scoring record", source: "Kicker", time: "6h ago" }]
+  },
+  p10: {
+    id: "p10",
+    name: "Phil Foden",
+    photoId: 303473,
+    position: "Midfielder",
+    nationality: "England",
+    age: 24,
+    club: { id: 8456, name: "Man City" },
+    stats: { goals: 9, assists: 12, appearances: 16, yellow: 2, red: 0 },
+    form: [8.1, 8.4, 7.9, 8.7, 8.2, 8.6, 8.0, 8.8, 7.6, 8.5],
+    news: [{ title: "Foden earns England Player of the Year", source: "BBC Sport", time: "1d ago" }]
+  },
+  p11: {
+    id: "p11",
+    name: "Lamine Yamal",
+    photoId: 1110176,
+    position: "Winger",
+    nationality: "Spain",
+    age: 17,
+    club: { id: 8633, name: "Barcelona" },
+    stats: { goals: 10, assists: 13, appearances: 17, yellow: 1, red: 0 },
+    form: [8.5, 8.9, 8.2, 9.1, 8.7, 8.4, 9.0, 8.6, 8.3, 8.8],
+    news: [{ title: "Yamal becomes youngest La Liga top scorer", source: "Marca", time: "4h ago" }]
+  },
+  p12: {
+    id: "p12",
+    name: "Marcus Rashford",
+    photoId: 258923,
+    position: "Forward",
+    nationality: "England",
+    age: 27,
+    club: { id: 10260, name: "Man United" },
+    stats: { goals: 7, assists: 4, appearances: 15, yellow: 2, red: 0 },
+    form: [7.2, 7.8, 6.9, 7.5, 8.0, 7.1, 7.6, 7.4, 7.9, 7.3],
+    news: [{ title: "Rashford back in form after difficult spell", source: "The Athletic", time: "2h ago" }]
   }
 };
 

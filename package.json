@@ -5,10 +5,9 @@
   "type": "module",
   "description": "Football Stats Dashboard — WDD 330 final project",
   "scripts": {
-    "start": "vite",
+    "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview",
-    "start": "vite preview --port 5173"
+    "preview": "vite preview"
   },
   "devDependencies": {
     "vite": "^8.0.16"
