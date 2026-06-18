@@ -229,4 +229,4 @@ Both APIs reset daily. The cache keeps the app usable until then.
 - Imagery: FotMob image CDN
 - Fonts: Inter & Roboto Mono via Google Fonts
 
-Built by Lebohang Sebata · WDD 330 · BYU-Idaho · 2026
+Built by Justine Dube · WDD 330 · BYU-Idaho · 2026
